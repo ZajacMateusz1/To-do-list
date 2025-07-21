@@ -13,9 +13,21 @@ export default function AddTask({ handleAddTaskClick }) {
           id="task"
           value={inputValue}
           onChange={handleChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleAddTaskClick(inputValue);
+              setInputValue("");
+            }
+          }}
         />
       </div>
-      <button type="button" onClick={() => handleAddTaskClick(inputValue)}>
+      <button
+        type="button"
+        onClick={() => {
+          handleAddTaskClick(inputValue);
+          setInputValue("");
+        }}
+      >
         Dodaj zadanie
       </button>
     </>
