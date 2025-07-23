@@ -11,12 +11,21 @@ function App() {
     ]);
     id.current++;
   }
+  function handleDeleteTaskClick(id) {
+    setTasks((prev) => {
+      return prev.filter((element) => element.id !== id);
+    });
+  }
   return (
     <>
       <AddTask handleAddTaskClick={handleAddTaskClick} />
       <ol>
         {tasks.map((task) => (
-          <Task {...task} key={task.id} />
+          <Task
+            handleDeleteTaskClick={handleDeleteTaskClick}
+            {...task}
+            key={task.id}
+          />
         ))}
       </ol>
     </>
