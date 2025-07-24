@@ -1,15 +1,23 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
+import { styled } from "styled-components";
+import Header from "./components/Header.jsx";
 import AddTask from "./components/AddTask.jsx";
 import Task from "./components/Task.jsx";
+const Ol = styled.ol`
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 1rem;
+  padding: 2%;
+`;
 function App() {
-  const id = useRef(0);
   const [tasks, setTasks] = useState([]);
   function handleAddTaskClick(inputValue) {
     setTasks((prev) => [
       ...prev,
-      { id: id.current, value: inputValue, date: new Date().toLocaleString() },
+      { id: Date.now(), value: inputValue, date: new Date().toLocaleString() },
     ]);
-    id.current++;
   }
   function handleDeleteTaskClick(id) {
     setTasks((prev) => {
@@ -18,8 +26,9 @@ function App() {
   }
   return (
     <>
+      <Header />
       <AddTask handleAddTaskClick={handleAddTaskClick} />
-      <ol>
+      <Ol>
         {tasks.map((task) => (
           <Task
             handleDeleteTaskClick={handleDeleteTaskClick}
@@ -27,7 +36,7 @@ function App() {
             key={task.id}
           />
         ))}
-      </ol>
+      </Ol>
     </>
   );
 }
