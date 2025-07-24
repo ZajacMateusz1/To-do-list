@@ -5,56 +5,77 @@ const FormElements = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-`;
-const Input = styled.input`
-  width: 50%;
-  height: 4vh;
-  margin: 0.5rem 0;
-  padding: 0.7rem 0.5rem;
-  border-radius: 5px;
-  border: 1.5px solid black;
-`;
-const Label = styled.label`
-  font-size: 1.5rem;
-`;
-const Button = styled.button`
-  padding: 0.5rem;
-  text-transform: uppercase;
-  background-color: #0b57d0;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  & input {
+    width: 50%;
+    height: 4vh;
+    margin: 0.5rem 0 0;
+    padding: 0.7rem 0.5rem;
+    border-radius: 5px;
+    border: 1.5px solid
+      ${({ $isInputEmpty }) => ($isInputEmpty ? "red" : "black")};
+    background-color: ${({ $isInputEmpty }) =>
+      $isInputEmpty ? "rgb(252, 73, 73)" : "transparent"};
+  }
+  & label {
+    font-size: 1.5rem;
+  }
+  & p.error {
+    margin: 0.5rem 0;
+    color: red;
+    font-weight: 700;
+    font-size: 0.8rem;
+    visibility: ${({ $isInputEmpty }) => {
+      return $isInputEmpty ? "visible" : "hidden";
+    }};
+  }
+  & button {
+    padding: 0.5rem;
+    text-transform: uppercase;
+    background-color: #0b57d0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
 `;
 export default function AddTask({ handleAddTaskClick }) {
   const [inputValue, setInputValue] = useState("");
+  const [isInputEmpty, setIsInputEmpty] = useState(false);
   function handleChange(e) {
     setInputValue(e.target.value);
   }
+  function isInputEmptyCheck(inputValue) {
+    if (inputValue.trim()) {
+      handleAddTaskClick(inputValue);
+      setInputValue("");
+      setIsInputEmpty(false);
+    } else {
+      setIsInputEmpty(true);
+    }
+  }
   return (
-    <FormElements>
-      <Label htmlFor="task">Dodaj zadanie:</Label>
-      <Input
+    <FormElements $isInputEmpty={isInputEmpty}>
+      <label htmlFor="task">Podaj treść zadania:</label>
+      <input
         type="text"
         id="task"
-        placeholder="Podaj treść zadania"
         value={inputValue}
         onChange={handleChange}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
-            handleAddTaskClick(inputValue);
-            setInputValue("");
+            isInputEmptyCheck(inputValue);
           }
         }}
       />
-      <Button
+      <p className="error">Wprowadź treść zadania</p>
+      <button
         type="button"
         onClick={() => {
-          handleAddTaskClick(inputValue);
-          setInputValue("");
+          isInputEmptyCheck(inputValue);
         }}
       >
         Dodaj zadanie
-      </Button>
+      </button>
     </FormElements>
   );
 }

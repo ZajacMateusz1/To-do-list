@@ -1,11 +1,22 @@
 import { styled } from "styled-components";
-const colors = ["#c2e7ff", "#C4EED0", "#F29900"];
 const Li = styled.li`
   flex-basis: 23%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 0.5rem;
   background-color: #c4eed0;
   border-radius: 5px;
   position: relative;
+  min-height: 25vh;
+  p.text {
+    text-align: center;
+  }
+  p.date {
+    font-size: 0.5rem;
+    margin-top: 0.2rem;
+    text-align: right;
+  }
 
   & button.delete {
     position: absolute;
@@ -24,8 +35,11 @@ export default function Task({ id, value, date, handleDeleteTaskClick }) {
       <button className="delete" onClick={() => handleDeleteTaskClick(id)}>
         X
       </button>
-      <p>Treść zadania: {value}</p>
-      <p>Data utworzenia: {date}</p>
+      <p className="text">
+        <p>Treść zadania:</p>
+        <p>{value}</p>
+      </p>
+      <p className="date">Data utworzenia: {date}</p>
     </Li>
   );
 }
